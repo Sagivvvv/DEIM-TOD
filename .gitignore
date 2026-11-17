@@ -1,0 +1,15 @@
+# Datasets and packaged copies
+/datasets/
+/*.zip
+
+# Independently versioned dependency
+/cocoapi-aitod/
+
+# Local editor settings, generated output and temporary files
+/.idea/
+/DEIM-main/output/
+/DEIM-main/tmpr10u75em/
+
+# Local credentials
+.env.*
+kaggle.json

@@ -1,0 +1,254 @@
+{
+  "review_date": "2026-11-16",
+  "report_sha256": "36bcb8cd702b94492731abc999f27d0a18b93fa5a47ae8f4da91df6f9e8511ee",
+  "status": "REBUILD_AND_TRAIN_COMPLETED",
+  "scope": "Report/checkpoint review, no local re-evaluation of full image caches",
+  "checks": {
+    "zip_crc_ok": true,
+    "baseline_metric_max_absolute_difference": {
+      "validation": {
+        "Greedy-NMS": 0.0,
+        "Soft-NMS": 0.0,
+        "WBF": 0.0,
+        "SAHI-NMM": 0.0
+      },
+      "test": {
+        "Greedy-NMS": 0.0,
+        "Soft-NMS": 0.0,
+        "WBF": 0.0,
+        "SAHI-NMM": 0.0
+      }
+    },
+    "ordered_candidate_fingerprints": {
+      "train": {
+        "images": 746,
+        "candidates": 221373,
+        "same_id_set": true,
+        "mismatches": [],
+        "repeat_max_abs": [
+          0.0
+        ]
+      },
+      "test": {
+        "images": 786,
+        "candidates": 174146,
+        "same_id_set": true,
+        "mismatches": [],
+        "repeat_max_abs": [
+          0.0
+        ]
+      }
+    },
+    "train_validation_disjoint": true,
+    "split_matches_p0": true,
+    "projection_file_sha_ok": true,
+    "feature_signatures_match": true,
+    "parent_cache_files_unchanged": {
+      "train": true,
+      "test": true
+    },
+    "source_hash_matches_local": {
+      "TileStitchingNet/p0r.py": true,
+      "TileStitchingNet/stage2.py": true,
+      "TileStitchingNet/stage1.py": true,
+      "TileStitchingNet/trainEval.py": true,
+      "tools/kaggle_p0r_train.py": false
+    },
+    "new_cache_hashes": {
+      "train": "bb7345900fbf7f4d0408592ad1c82dae73620e5c13095c0919bd330ad6fe63b6",
+      "test": "b027568c1c4840db55d0f30de20ee59b2871d7571e0bad907d2b7103eeff3e07"
+    },
+    "pointwise_best_sha_ok": true,
+    "pointwise_best_equals_epoch1": true,
+    "pointwise_best_metrics_match": true,
+    "pointwise_epoch0_baseline_max_diff": 0.0,
+    "local_best_sha_ok": true,
+    "local_best_equals_epoch1": true,
+    "local_best_metrics_match": true,
+    "local_epoch0_baseline_max_diff": 0.0
+  },
+  "limitations": [
+    "The Kaggle entrypoint source hash differs from current local script (not just LF/CRLF); report contains hash only. Obtain the executed entrypoint source with P1 artifacts. Core ROI, model, evaluator source hashes match.",
+    "Historical candidate extraction threshold and first-stage cross-pool drift remain unverified; P0-R fixes new ROI provenance only.",
+    "No full new caches supplied, so their payload hashes and post-write invariance are runtime report evidence, not independently recomputed locally.",
+    "Single training seed; gains are descriptive, not significance claims.",
+    "Feature extraction and projection/preprocessing changed together; historical random-projection mismatch is not proven by improved ROI statistics."
+  ],
+  "roi_mean_cosine": {
+    "before": {
+      "train_validation": 0.9993514302544126,
+      "train_test": 0.48990701590657276
+    },
+    "after": {
+      "train_validation": 0.9994472906770058,
+      "train_test": 0.9990748996733879
+    }
+  },
+  "training": {
+    "pointwise": {
+      "best_epoch": 1,
+      "matches_history_best": true,
+      "epochs": 18,
+      "best_tiny_ap50": 71.70475969448445,
+      "last_tiny_ap50": 66.16835131910167,
+      "first_train_loss": 0.1781173884240382,
+      "last_train_loss": 0.10156391915312278,
+      "initial_quality": {
+        "positive_mae": 0.24296617936740367,
+        "gt_best_by_base": 0.7021450217716346,
+        "gt_best_by_new": 0.7021450217716346,
+        "gt_oracle_quality": 0.7311641444996928,
+        "reliable_gt_groups": 3306,
+        "positive_candidates": 9327
+      },
+      "last_quality": {
+        "positive_mae": 0.20351424235564994,
+        "gt_best_by_base": 0.7021450217716346,
+        "gt_best_by_new": 0.7020070258769135,
+        "gt_oracle_quality": 0.7311641444996928,
+        "reliable_gt_groups": 3306,
+        "positive_candidates": 9327
+      }
+    },
+    "local": {
+      "best_epoch": 1,
+      "matches_history_best": true,
+      "epochs": 18,
+      "best_tiny_ap50": 71.82212438314014,
+      "last_tiny_ap50": 67.1918784886093,
+      "first_train_loss": 0.17781078483742907,
+      "last_train_loss": 0.07298917804824862,
+      "initial_quality": {
+        "positive_mae": 0.24296617936740367,
+        "gt_best_by_base": 0.7021450217716346,
+        "gt_best_by_new": 0.7021450217716346,
+        "gt_oracle_quality": 0.7311641444996928,
+        "reliable_gt_groups": 3306,
+        "positive_candidates": 9327
+      },
+      "last_quality": {
+        "positive_mae": 0.16791251826109937,
+        "gt_best_by_base": 0.7021450217716346,
+        "gt_best_by_new": 0.7004155584774951,
+        "gt_oracle_quality": 0.7311641444996928,
+        "reliable_gt_groups": 3306,
+        "positive_candidates": 9327
+      }
+    }
+  },
+  "test_metrics": {
+    "Greedy-NMS": {
+      "AP": 20.562716499706912,
+      "AP25": 78.0693215204618,
+      "AP50": 54.981923644824434,
+      "AP75": 10.827793010515757,
+      "Tiny_AP25": 75.07912197488437,
+      "Tiny_AP50": 49.97736826880781,
+      "Tiny_AP75": 7.029234529620713,
+      "Nested_Recall50": 31.182795698924732,
+      "Nested_Recall50_count": 93,
+      "Split_Recall75": 29.683698296836983,
+      "Split_Recall75_count": 2055,
+      "Latency_ms": 6.54044686386963
+    },
+    "Soft-NMS": {
+      "AP": 20.873817689635036,
+      "AP25": 79.3539447817752,
+      "AP50": 55.58802452519873,
+      "AP75": 11.127096379778937,
+      "Tiny_AP25": 76.11897231942547,
+      "Tiny_AP50": 50.228687011032115,
+      "Tiny_AP75": 7.1845034018786516,
+      "Nested_Recall50": 33.333333333333336,
+      "Nested_Recall50_count": 93,
+      "Split_Recall75": 33.57664233576642,
+      "Split_Recall75_count": 2055,
+      "Latency_ms": 16.534295050887142
+    },
+    "WBF": {
+      "AP": 20.727106049581757,
+      "AP25": 77.43406417085038,
+      "AP50": 55.67274738066956,
+      "AP75": 10.678554943302057,
+      "Tiny_AP25": 74.90766395961779,
+      "Tiny_AP50": 50.61009003295117,
+      "Tiny_AP75": 7.106084872137545,
+      "Nested_Recall50": 33.333333333333336,
+      "Nested_Recall50_count": 93,
+      "Split_Recall75": 28.759124087591243,
+      "Split_Recall75_count": 2055,
+      "Latency_ms": 25.430130721371324
+    },
+    "SAHI-NMM": {
+      "AP": 13.350596771866845,
+      "AP25": 71.8605132809543,
+      "AP50": 38.639203660210676,
+      "AP75": 6.304843568490395,
+      "Tiny_AP25": 68.75539234317252,
+      "Tiny_AP50": 34.03129273987115,
+      "Tiny_AP75": 3.4589426572301423,
+      "Nested_Recall50": 1.075268817204301,
+      "Nested_Recall50_count": 93,
+      "Split_Recall75": 16.83698296836983,
+      "Split_Recall75_count": 2055,
+      "Latency_ms": 15.812116057248762
+    },
+    "pointwise/before_nms": {
+      "AP": 21.052485777016546,
+      "AP25": 78.64623026124075,
+      "AP50": 55.849393311232056,
+      "AP75": 11.323872744353727,
+      "Tiny_AP25": 75.72725888777477,
+      "Tiny_AP50": 50.54214469628191,
+      "Tiny_AP75": 7.1972337775508395,
+      "Nested_Recall50": 31.182795698924732,
+      "Nested_Recall50_count": 93,
+      "Split_Recall75": 31.046228710462287,
+      "Split_Recall75_count": 2055,
+      "Latency_ms": 9.22893238930382
+    },
+    "pointwise/after_nms": {
+      "AP": 20.900917050077954,
+      "AP25": 78.62709011820819,
+      "AP50": 55.65680995461967,
+      "AP75": 11.137713286592634,
+      "Tiny_AP25": 75.67853793884156,
+      "Tiny_AP50": 50.489829040531475,
+      "Tiny_AP75": 7.152367214113865,
+      "Nested_Recall50": 31.182795698924732,
+      "Nested_Recall50_count": 93,
+      "Split_Recall75": 29.683698296836983,
+      "Split_Recall75_count": 2055,
+      "Latency_ms": 9.094829790088097
+    },
+    "local/before_nms": {
+      "AP": 20.96495359635511,
+      "AP25": 78.63461430051113,
+      "AP50": 55.74953859225011,
+      "AP75": 11.224525998630028,
+      "Tiny_AP25": 75.72996811387542,
+      "Tiny_AP50": 50.51467472378888,
+      "Tiny_AP75": 7.188400542551096,
+      "Nested_Recall50": 31.182795698924732,
+      "Nested_Recall50_count": 93,
+      "Split_Recall75": 30.75425790754258,
+      "Split_Recall75_count": 2055,
+      "Latency_ms": 14.196144100516705
+    },
+    "local/after_nms": {
+      "AP": 20.858640273394926,
+      "AP25": 78.62265290671918,
+      "AP50": 55.604617638130904,
+      "AP75": 11.083449678812986,
+      "Tiny_AP25": 75.68067852400998,
+      "Tiny_AP50": 50.46482166250033,
+      "Tiny_AP75": 7.143415839583617,
+      "Nested_Recall50": 31.182795698924732,
+      "Nested_Recall50_count": 93,
+      "Split_Recall75": 29.683698296836983,
+      "Split_Recall75_count": 2055,
+      "Latency_ms": 13.187740870220823
+    }
+  },
+  "decision": "P0-R reported functional checks pass; proceed to validation-only P1 diagnostics, retain provenance limitations and retrieve executed entrypoint source. No new training required for P1."
+}

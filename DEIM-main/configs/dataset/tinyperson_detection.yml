@@ -1,0 +1,42 @@
+task: detection
+
+evaluator:
+  type: CocoEvaluator        # TinyPerson 基准报标准 COCO AP/AP50（非 AITOD 的 verytiny/LRP），故用标准评测器
+  iou_types: ['bbox', ]
+
+num_classes: 3               # category_id: 1=sea_person, 2=earth_person；0 为空占位
+remap_mscoco_category: False
+
+train_dataloader:
+  type: DataLoader
+  dataset:
+    type: CocoDetection
+    # json 内 file_name 形如 "labeled_images/xxx.jpg"（已含子目录），故 img_folder 指到 train/ 而非 train/labeled_images/
+    img_folder: /root/autodl-tmp/Tinyperson/train
+    ann_file: /root/autodl-tmp/Tinyperson/annotations/tiny_set_train.json   # 标准协议用非 dense 版（排除 dense/ignore 框）
+    return_masks: False
+    transforms:
+      type: Compose
+      ops: ~
+  shuffle: True
+  num_workers: 4
+  drop_last: True
+  collate_fn:
+    type: BatchImageCollateFunction
+
+
+val_dataloader:
+  type: DataLoader
+  dataset:
+    type: CocoDetection
+    img_folder: /root/autodl-tmp/Tinyperson/test
+    ann_file: /root/autodl-tmp/Tinyperson/annotations/tiny_set_test.json
+    return_masks: False
+    transforms:
+      type: Compose
+      ops: ~
+  shuffle: False
+  num_workers: 4
+  drop_last: False
+  collate_fn:
+    type: BatchImageCollateFunction

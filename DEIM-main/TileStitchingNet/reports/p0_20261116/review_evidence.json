@@ -1,0 +1,52 @@
+{
+  "review_date": "2026-11-16",
+  "decision": "REPRODUCTION_PASSED_PROVENANCE_REQUIRES_FOLLOWUP",
+  "report_sha256": "94b4e5db8d12b4ebe1ea343b388d6b243524b77594ed807e849f588d340f7ca4",
+  "script_status": "COMPLETED_REVIEW_PROVENANCE",
+  "frozen_files": {
+    "train": {
+      "cache_sha256": "4d2138cf0fba10afbeea3c1cf3ccbae072f0ebb647f84c7c1281b819e97acf47",
+      "gt_sha256": "c4f5bef58be3bd7b6b622a4a2ac7030255d2321ef5e59dcc2d153b999e0de407"
+    },
+    "test": {
+      "cache_sha256": "0e97ef57d22475e3dc34fe7e9692d6891760bc0795c20ab6d38274a27213e571",
+      "gt_sha256": "8c7703d7058a75de37c45d4b0023769ad08ee14a6767ad4939c53e4763d1f8b1"
+    }
+  },
+  "frozen_checkpoints": {
+    "pointwise": "a7b4f2c7fcb32f07c0c8e6dcb11573e28101f640e3cc7b71fc4b519484880541",
+    "local": "156aecb9b6450cc3d58b877303e836bdd3973c53fadce70e5f45cc74dfdad048"
+  },
+  "score_metadata_checks": {
+    "train": {
+      "manifest_conf_thresh": 0.15,
+      "observed_minimum": 0.080078125,
+      "observed_median": 0.1541748046875
+    },
+    "validation": {
+      "manifest_conf_thresh": 0.15,
+      "observed_minimum": 0.080078125,
+      "observed_median": 0.161865234375
+    },
+    "test": {
+      "manifest_conf_thresh": 0.15,
+      "observed_minimum": 0.080078125,
+      "observed_median": 0.1478271484375
+    }
+  },
+  "roi_mean_comparisons": {
+    "validation": {
+      "mean_vector_cosine": 0.9993514302544126,
+      "mean_vector_pearson": 0.998901159517449
+    },
+    "test": {
+      "mean_vector_cosine": 0.48990701590657276,
+      "mean_vector_pearson": 0.1156614660317579
+    }
+  },
+  "unresolved": [
+    "Actual cache confidence floor conflicts with manifest",
+    "Train/test ROI mean distributions differ strongly; projection identity not verified",
+    "Historical stage-one cache unavailable; stage-one to stage-two baseline drift unexplained"
+  ]
+}

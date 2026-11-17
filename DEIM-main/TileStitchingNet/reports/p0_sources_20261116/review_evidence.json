@@ -1,0 +1,629 @@
+{
+  "decision": "CONTENT_CONSISTENT_METADATA_CONTRADICTED_ROI_IDENTITY_UNVERIFIED",
+  "report_sha256": "57ef277d1964705f8210b5e2a6e558ae0ab33a35da1c2e0d0125819ba176d1b0",
+  "frozen_cache_hashes": {
+    "train": "4d2138cf0fba10afbeea3c1cf3ccbae072f0ebb647f84c7c1281b819e97acf47",
+    "test": "0e97ef57d22475e3dc34fe7e9692d6891760bc0795c20ab6d38274a27213e571"
+  },
+  "counts": {
+    "train": {
+      "candidates": 178531,
+      "below_008": 0,
+      "below_015": 86201,
+      "below_declared": 86201,
+      "below_declared_tolerant": 85467,
+      "score_column_mismatch": 0,
+      "roi_quantized_mismatch": 0,
+      "roi_missing_rows": 0,
+      "nonfinite_rows": 0,
+      "nonperson_rows": 0
+    },
+    "validation": {
+      "candidates": 42842,
+      "below_008": 0,
+      "below_015": 19583,
+      "below_declared": 19583,
+      "below_declared_tolerant": 19424,
+      "score_column_mismatch": 0,
+      "roi_quantized_mismatch": 0,
+      "roi_missing_rows": 0,
+      "nonfinite_rows": 0,
+      "nonperson_rows": 0
+    },
+    "test": {
+      "candidates": 174146,
+      "below_008": 0,
+      "below_015": 88530,
+      "below_declared": 88530,
+      "below_declared_tolerant": 87858,
+      "score_column_mismatch": 0,
+      "roi_quantized_mismatch": 0,
+      "roi_missing_rows": 0,
+      "nonfinite_rows": 0,
+      "nonperson_rows": 0
+    }
+  },
+  "roi_comparisons": {
+    "validation": {
+      "candidate_weighted": {
+        "cosine": 0.9993513435443069,
+        "pearson": 0.9989010155925668,
+        "l2": 0.18407562839501174
+      },
+      "image_weighted": {
+        "cosine": 0.9997350917530259,
+        "pearson": 0.9995433156481606,
+        "l2": 0.11672178149608169
+      },
+      "matched_strata": [
+        {
+          "stratum": "size_bin_0/score_bin_1",
+          "n_left": 19719,
+          "n_right": 4891,
+          "similarity": {
+            "cosine": 0.9995676657707411,
+            "pearson": 0.9992543893318894,
+            "l2": 0.14555577646489745
+          }
+        },
+        {
+          "stratum": "size_bin_0/score_bin_2",
+          "n_left": 14184,
+          "n_right": 3738,
+          "similarity": {
+            "cosine": 0.9998696050862682,
+            "pearson": 0.9997824171730545,
+            "l2": 0.08178493474072107
+          }
+        },
+        {
+          "stratum": "size_bin_0/score_bin_3",
+          "n_left": 5307,
+          "n_right": 1338,
+          "similarity": {
+            "cosine": 0.9997757865117679,
+            "pearson": 0.9996457979206775,
+            "l2": 0.10977744910083048
+          }
+        },
+        {
+          "stratum": "size_bin_0/score_bin_4",
+          "n_left": 2572,
+          "n_right": 718,
+          "similarity": {
+            "cosine": 0.9996411604893533,
+            "pearson": 0.999416518051427,
+            "l2": 0.13866893509800116
+          }
+        },
+        {
+          "stratum": "size_bin_1/score_bin_1",
+          "n_left": 22882,
+          "n_right": 5324,
+          "similarity": {
+            "cosine": 0.9999074624285716,
+            "pearson": 0.9998422027065175,
+            "l2": 0.0695394409754024
+          }
+        },
+        {
+          "stratum": "size_bin_1/score_bin_2",
+          "n_left": 15065,
+          "n_right": 3767,
+          "similarity": {
+            "cosine": 0.999801699533203,
+            "pearson": 0.9996718285764532,
+            "l2": 0.10406948729550522
+          }
+        },
+        {
+          "stratum": "size_bin_1/score_bin_3",
+          "n_left": 5346,
+          "n_right": 1533,
+          "similarity": {
+            "cosine": 0.9984760671043382,
+            "pearson": 0.9975476478407439,
+            "l2": 0.2928341030282291
+          }
+        },
+        {
+          "stratum": "size_bin_1/score_bin_4",
+          "n_left": 4218,
+          "n_right": 1137,
+          "similarity": {
+            "cosine": 0.9996912646007723,
+            "pearson": 0.9995018844589625,
+            "l2": 0.13248358566525884
+          }
+        },
+        {
+          "stratum": "size_bin_1/score_bin_5",
+          "n_left": 646,
+          "n_right": 174,
+          "similarity": {
+            "cosine": 0.9992361590352953,
+            "pearson": 0.9987829695859302,
+            "l2": 0.21083179885499323
+          }
+        },
+        {
+          "stratum": "size_bin_2/score_bin_1",
+          "n_left": 22175,
+          "n_right": 5550,
+          "similarity": {
+            "cosine": 0.9996579692631177,
+            "pearson": 0.9994309728410347,
+            "l2": 0.13699778219685152
+          }
+        },
+        {
+          "stratum": "size_bin_2/score_bin_2",
+          "n_left": 13434,
+          "n_right": 3371,
+          "similarity": {
+            "cosine": 0.9984629195385859,
+            "pearson": 0.9974840908863539,
+            "l2": 0.29496446910022867
+          }
+        },
+        {
+          "stratum": "size_bin_2/score_bin_3",
+          "n_left": 4520,
+          "n_right": 1308,
+          "similarity": {
+            "cosine": 0.9938219770448982,
+            "pearson": 0.9900816133139021,
+            "l2": 0.6007480773684357
+          }
+        },
+        {
+          "stratum": "size_bin_2/score_bin_4",
+          "n_left": 4363,
+          "n_right": 1435,
+          "similarity": {
+            "cosine": 0.9978461817274505,
+            "pearson": 0.9965767349192783,
+            "l2": 0.35859659590551235
+          }
+        },
+        {
+          "stratum": "size_bin_2/score_bin_5",
+          "n_left": 1604,
+          "n_right": 493,
+          "similarity": {
+            "cosine": 0.994260609279803,
+            "pearson": 0.9909132600553552,
+            "l2": 0.5888763422814808
+          }
+        },
+        {
+          "stratum": "size_bin_3/score_bin_1",
+          "n_left": 11714,
+          "n_right": 2313,
+          "similarity": {
+            "cosine": 0.9994402573176474,
+            "pearson": 0.9990747521075285,
+            "l2": 0.17589628879098268
+          }
+        },
+        {
+          "stratum": "size_bin_3/score_bin_2",
+          "n_left": 6215,
+          "n_right": 1232,
+          "similarity": {
+            "cosine": 0.9989572861250668,
+            "pearson": 0.998302942095235,
+            "l2": 0.24435418092047784
+          }
+        },
+        {
+          "stratum": "size_bin_3/score_bin_3",
+          "n_left": 1755,
+          "n_right": 393,
+          "similarity": {
+            "cosine": 0.9976149858632082,
+            "pearson": 0.9961935844367791,
+            "l2": 0.37573728013289887
+          }
+        },
+        {
+          "stratum": "size_bin_3/score_bin_4",
+          "n_left": 1750,
+          "n_right": 566,
+          "similarity": {
+            "cosine": 0.9959881421369515,
+            "pearson": 0.9937175539306043,
+            "l2": 0.49417745306106475
+          }
+        },
+        {
+          "stratum": "size_bin_3/score_bin_5",
+          "n_left": 1458,
+          "n_right": 630,
+          "similarity": {
+            "cosine": 0.990602749000971,
+            "pearson": 0.9853974307796849,
+            "l2": 0.7578518884154135
+          }
+        },
+        {
+          "stratum": "size_bin_4/score_bin_1",
+          "n_left": 7867,
+          "n_right": 1167,
+          "similarity": {
+            "cosine": 0.9984041495472968,
+            "pearson": 0.9973809105622892,
+            "l2": 0.29772357990351866
+          }
+        },
+        {
+          "stratum": "size_bin_4/score_bin_2",
+          "n_left": 4254,
+          "n_right": 566,
+          "similarity": {
+            "cosine": 0.9987360969252018,
+            "pearson": 0.9979616306205045,
+            "l2": 0.27004389482260005
+          }
+        },
+        {
+          "stratum": "size_bin_4/score_bin_3",
+          "n_left": 925,
+          "n_right": 164,
+          "similarity": {
+            "cosine": 0.9954527713159768,
+            "pearson": 0.9927651322868731,
+            "l2": 0.5185722222555488
+          }
+        },
+        {
+          "stratum": "size_bin_4/score_bin_4",
+          "n_left": 1075,
+          "n_right": 153,
+          "similarity": {
+            "cosine": 0.9989206289162392,
+            "pearson": 0.9983063385219292,
+            "l2": 0.25537810847168896
+          }
+        },
+        {
+          "stratum": "size_bin_4/score_bin_5",
+          "n_left": 1665,
+          "n_right": 289,
+          "similarity": {
+            "cosine": 0.9972235253208652,
+            "pearson": 0.9957277403605563,
+            "l2": 0.41099258055341686
+          }
+        },
+        {
+          "stratum": "size_bin_5/score_bin_1",
+          "n_left": 1844,
+          "n_right": 338,
+          "similarity": {
+            "cosine": 0.9978608153438986,
+            "pearson": 0.9964510943430679,
+            "l2": 0.33856628952545303
+          }
+        },
+        {
+          "stratum": "size_bin_5/score_bin_2",
+          "n_left": 961,
+          "n_right": 116,
+          "similarity": {
+            "cosine": 0.998124456784181,
+            "pearson": 0.9969320265283479,
+            "l2": 0.3230396383741267
+          }
+        }
+      ],
+      "interpretation": "Descriptive distribution check, not proof of identical/different projection weights."
+    },
+    "test": {
+      "candidate_weighted": {
+        "cosine": 0.4899069841222666,
+        "pearson": 0.11566104285859338,
+        "l2": 5.05959169902324
+      },
+      "image_weighted": {
+        "cosine": 0.47512958425070234,
+        "pearson": 0.09416474423541865,
+        "l2": 5.133111476404485
+      },
+      "matched_strata": [
+        {
+          "stratum": "size_bin_0/score_bin_1",
+          "n_left": 19719,
+          "n_right": 14882,
+          "similarity": {
+            "cosine": 0.5610274005937194,
+            "pearson": 0.2045772406046658,
+            "l2": 4.53667224906899
+          }
+        },
+        {
+          "stratum": "size_bin_0/score_bin_2",
+          "n_left": 14184,
+          "n_right": 11795,
+          "similarity": {
+            "cosine": 0.550746239691504,
+            "pearson": 0.20535245150595863,
+            "l2": 4.683356345614282
+          }
+        },
+        {
+          "stratum": "size_bin_0/score_bin_3",
+          "n_left": 5307,
+          "n_right": 5233,
+          "similarity": {
+            "cosine": 0.5501568709813318,
+            "pearson": 0.22340575256861228,
+            "l2": 4.758989789755231
+          }
+        },
+        {
+          "stratum": "size_bin_0/score_bin_4",
+          "n_left": 2572,
+          "n_right": 1858,
+          "similarity": {
+            "cosine": 0.5607190124966933,
+            "pearson": 0.2575055391700023,
+            "l2": 4.760798756056776
+          }
+        },
+        {
+          "stratum": "size_bin_1/score_bin_1",
+          "n_left": 22882,
+          "n_right": 20222,
+          "similarity": {
+            "cosine": 0.5127102942701023,
+            "pearson": 0.15300695584049895,
+            "l2": 4.948789792515549
+          }
+        },
+        {
+          "stratum": "size_bin_1/score_bin_2",
+          "n_left": 15065,
+          "n_right": 12466,
+          "similarity": {
+            "cosine": 0.5110849811011667,
+            "pearson": 0.17033280432641132,
+            "l2": 5.0578769778420245
+          }
+        },
+        {
+          "stratum": "size_bin_1/score_bin_3",
+          "n_left": 5346,
+          "n_right": 4593,
+          "similarity": {
+            "cosine": 0.5161550268416948,
+            "pearson": 0.19583766780327191,
+            "l2": 5.110018065839357
+          }
+        },
+        {
+          "stratum": "size_bin_1/score_bin_4",
+          "n_left": 4218,
+          "n_right": 3474,
+          "similarity": {
+            "cosine": 0.5344944760210695,
+            "pearson": 0.23838705252430617,
+            "l2": 5.063269099804606
+          }
+        },
+        {
+          "stratum": "size_bin_1/score_bin_5",
+          "n_left": 646,
+          "n_right": 425,
+          "similarity": {
+            "cosine": 0.5457800859337797,
+            "pearson": 0.27142478775416184,
+            "l2": 5.0632542147032416
+          }
+        },
+        {
+          "stratum": "size_bin_2/score_bin_1",
+          "n_left": 22175,
+          "n_right": 26405,
+          "similarity": {
+            "cosine": 0.44944629588058965,
+            "pearson": 0.07568272561510504,
+            "l2": 5.39153334739961
+          }
+        },
+        {
+          "stratum": "size_bin_2/score_bin_2",
+          "n_left": 13434,
+          "n_right": 13518,
+          "similarity": {
+            "cosine": 0.4548307056561299,
+            "pearson": 0.10519488247811233,
+            "l2": 5.469843449147968
+          }
+        },
+        {
+          "stratum": "size_bin_2/score_bin_3",
+          "n_left": 4520,
+          "n_right": 4287,
+          "similarity": {
+            "cosine": 0.46339657885193963,
+            "pearson": 0.13602478516859054,
+            "l2": 5.510063497606933
+          }
+        },
+        {
+          "stratum": "size_bin_2/score_bin_4",
+          "n_left": 4363,
+          "n_right": 3987,
+          "similarity": {
+            "cosine": 0.4694532444030106,
+            "pearson": 0.16317416052063566,
+            "l2": 5.576284041283096
+          }
+        },
+        {
+          "stratum": "size_bin_2/score_bin_5",
+          "n_left": 1604,
+          "n_right": 1511,
+          "similarity": {
+            "cosine": 0.47804769847195916,
+            "pearson": 0.19264307814096282,
+            "l2": 5.629055261296111
+          }
+        },
+        {
+          "stratum": "size_bin_3/score_bin_1",
+          "n_left": 11714,
+          "n_right": 15868,
+          "similarity": {
+            "cosine": 0.3927427389164079,
+            "pearson": 0.005597030245677921,
+            "l2": 5.752143572945941
+          }
+        },
+        {
+          "stratum": "size_bin_3/score_bin_2",
+          "n_left": 6215,
+          "n_right": 7024,
+          "similarity": {
+            "cosine": 0.39466227154348493,
+            "pearson": 0.02740989797126389,
+            "l2": 5.8465838345263155
+          }
+        },
+        {
+          "stratum": "size_bin_3/score_bin_3",
+          "n_left": 1755,
+          "n_right": 2156,
+          "similarity": {
+            "cosine": 0.4030415689693645,
+            "pearson": 0.05831814923254667,
+            "l2": 5.894064576691473
+          }
+        },
+        {
+          "stratum": "size_bin_3/score_bin_4",
+          "n_left": 1750,
+          "n_right": 2023,
+          "similarity": {
+            "cosine": 0.4003664202475529,
+            "pearson": 0.08028701970092526,
+            "l2": 6.043388090470116
+          }
+        },
+        {
+          "stratum": "size_bin_3/score_bin_5",
+          "n_left": 1458,
+          "n_right": 1567,
+          "similarity": {
+            "cosine": 0.39402470168398607,
+            "pearson": 0.0895041070914285,
+            "l2": 6.183811397414581
+          }
+        },
+        {
+          "stratum": "size_bin_4/score_bin_1",
+          "n_left": 7867,
+          "n_right": 9146,
+          "similarity": {
+            "cosine": 0.34879247880800024,
+            "pearson": -0.0452343919135613,
+            "l2": 6.027149886213616
+          }
+        },
+        {
+          "stratum": "size_bin_4/score_bin_2",
+          "n_left": 4254,
+          "n_right": 4119,
+          "similarity": {
+            "cosine": 0.34708010831019187,
+            "pearson": -0.029670819667457347,
+            "l2": 6.1361323044309515
+          }
+        },
+        {
+          "stratum": "size_bin_4/score_bin_3",
+          "n_left": 925,
+          "n_right": 1340,
+          "similarity": {
+            "cosine": 0.3507218194780092,
+            "pearson": -0.004127239492521443,
+            "l2": 6.221213679026145
+          }
+        },
+        {
+          "stratum": "size_bin_4/score_bin_4",
+          "n_left": 1075,
+          "n_right": 1272,
+          "similarity": {
+            "cosine": 0.3471891195239485,
+            "pearson": 0.011184109157026547,
+            "l2": 6.338751536092352
+          }
+        },
+        {
+          "stratum": "size_bin_4/score_bin_5",
+          "n_left": 1665,
+          "n_right": 1370,
+          "similarity": {
+            "cosine": 0.3375264784547708,
+            "pearson": 0.0185653186540742,
+            "l2": 6.499643432795684
+          }
+        },
+        {
+          "stratum": "size_bin_5/score_bin_1",
+          "n_left": 1844,
+          "n_right": 2007,
+          "similarity": {
+            "cosine": 0.30254043060225827,
+            "pearson": -0.12385428694820286,
+            "l2": 6.180596815214258
+          }
+        },
+        {
+          "stratum": "size_bin_5/score_bin_2",
+          "n_left": 961,
+          "n_right": 795,
+          "similarity": {
+            "cosine": 0.29127651620407374,
+            "pearson": -0.11833898951547539,
+            "l2": 6.3407943342120365
+          }
+        },
+        {
+          "stratum": "size_bin_5/score_bin_3",
+          "n_left": 194,
+          "n_right": 217,
+          "similarity": {
+            "cosine": 0.2910441111643182,
+            "pearson": -0.10117181525240326,
+            "l2": 6.422141383963276
+          }
+        },
+        {
+          "stratum": "size_bin_5/score_bin_4",
+          "n_left": 222,
+          "n_right": 223,
+          "similarity": {
+            "cosine": 0.2929873385021767,
+            "pearson": -0.08180541397519918,
+            "l2": 6.509482149779351
+          }
+        },
+        {
+          "stratum": "size_bin_5/score_bin_5",
+          "n_left": 566,
+          "n_right": 344,
+          "similarity": {
+            "cosine": 0.2903585290413055,
+            "pearson": -0.05880712753494117,
+            "l2": 6.661840408403711
+          }
+        }
+      ],
+      "interpretation": "Descriptive distribution check, not proof of identical/different projection weights."
+    }
+  },
+  "next_step": "Freeze legacy candidates, rebuild traceable shared ROI; no further statistical-only source audit"
+}
