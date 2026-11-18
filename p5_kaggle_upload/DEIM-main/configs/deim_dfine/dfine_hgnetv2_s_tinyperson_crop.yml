@@ -1,0 +1,71 @@
+__include__: [
+  '../dataset/tinyperson_crop_detection.yml',   # TinyPerson 切块版:corner裁剪 + TinyPersonMergeEvaluator + 单类 num_classes=2
+  '../runtime.yml',
+  '../base/dataloader.yml',           # Resize=800、base_size=800 继承 base
+  '../base/optimizer.yml',
+  '../base/dfine_hgnetv2.yml',        # eval_spatial_size=800 继承 base
+]
+
+output_dir: ./output/dfine_hgnetv2_s_tinyperson_crop
+
+# ==================== D-FINE-S 模型结构（与官方 dfine_hgnetv2_s_coco.yml 一致）====================
+DEIM:
+  backbone: HGNetv2
+
+HGNetv2:
+  name: 'B0'
+  return_idx: [1, 2, 3]
+  freeze_at: -1
+  freeze_norm: False
+  use_lab: True
+  # pretrained 权重自动下载：训练前先 source /etc/network_turbo 开学术加速
+
+DFINETransformer:
+  num_layers: 3    # D-FINE-S 用 3 层解码器
+  eval_idx: -1
+
+HybridEncoder:
+  in_channels: [256, 512, 1024]
+  hidden_dim: 256
+  depth_mult: 0.34
+  expansion: 0.5
+
+optimizer:
+  type: AdamW
+  params:
+    -
+      params: '^(?=.*backbone)(?!.*norm|bn).*$'
+      lr: 0.0001
+    -
+      params: '^(?=.*backbone)(?=.*norm|bn).*$'
+      lr: 0.0001
+      weight_decay: 0.
+    -
+      params: '^(?=.*(?:encoder|decoder))(?=.*(?:norm|bn|bias)).*$'
+      weight_decay: 0.
+  lr: 0.0002
+  betas: [0.9, 0.999]
+  weight_decay: 0.0001
+
+# ==================== 训练配方（切块版）====================
+# 关键差异：切块后 train 子块数 ~8256，是整图(746)的 ~11 倍 → 单 epoch 迭代数 ×11。
+# 故 epoches 从整图版的 132 大幅下调到 36 即可达到相近甚至更足的总迭代量；
+# 这是起点值，请按验证集 AP50 表现增减（数据小时也可回调到 48~60）。
+epoches: 36
+
+train_dataloader:
+  total_batch_size: 8      # 单卡；OOM 降到 4
+  num_workers: 8
+  dataset:
+    transforms:
+      policy:
+        epoch: 30          # 前 30 epoch 强增强，之后关掉（按比例从整图版 120/132 缩放）
+  collate_fn:
+    # 切块子块统一 640×512，多尺度围绕 640~800 即可（子块适度放大利于微小目标）；全部 32 对齐
+    scales: [640, 640, 736, 800, 800, 800]
+    stop_epoch: 30         # 两阶段触发点（载 best_stg1.pth + 重启 EMA）；切勿设 0
+    ema_restart_decay: 0.9999
+
+val_dataloader:
+  total_batch_size: 16
+  num_workers: 8

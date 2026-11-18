@@ -1,0 +1,66 @@
+task: detection
+
+# ==================== 评估器:离线预切块小图推理 → merge 回整图 → 官方 TinyPerson AP/(可选)MR ====================
+# TinyPersonMergeEvaluator(重写版)内部流程:
+#   - 用整图 GT(merge_gt_file)经 build_tile_index 复现 {tile_id: (corner 偏移, 整图 id)} 映射(与离线切块脚本同源同参)
+#   - 切块预测框 + corner(x1,y1) → 整图全局坐标;按整图聚合;torchvision NMS(merge_nms_th) 合并(只 merge 一次)
+#   - **进程内复用官方** huicv COCOExpandEval(evaluate_tiny.py 用的同一个类)计算 AP,严格保留
+#     ignore/uncertain/IOD 与 'tiny' 口径(iouThrs=[0.25,0.5,0.75], maxDets=[200])
+#   - eval_mr=True 时额外用官方 cityperson_eval 计算 MR(默认关闭)
+# 依赖:AP 需要**原生 pycocotools**(纯 Python COCOeval)。请先 `pip install pycocotools`;
+#       faster_coco_eval 的编译版影子无法配合官方被重写的 evaluate/_prepare/evaluateImg 与 IOD 逻辑。
+evaluator:
+  type: TinyPersonMergeEvaluator
+  iou_types: ['bbox', ]
+  # 整图 GT(= evaluate_tiny.py 的 --merge-gt):786 图/单类 person/带 ignore+uncertain 标记/dense 已排除
+  merge_gt_file: datasets/Tinyperson/annotations/tiny_set_test_all.json
+  tile_w: 640              # 切块宽(必须与离线切块脚本完全一致)
+  tile_h: 576              # 切块高
+  overlap: 50              # 最小保底重叠(动态均匀,实际重叠≥50);末块沿边缘对齐,须与切块脚本一致
+  merge_nms_th: 0.5        # 官方跨块 NMS 阈值(evaluate_tiny.py L221)
+  score_th: 0.01           # 低分过滤(控内存:整图切块数 × num_top_queries)
+  max_det: ~               # 合并后不限制深度(None或<=0时保留NMS后全部预测框;若设整数如1000则按得分截断)
+  eval_max_dets: 200       # 官方评测标准每图最大检测数(官方基准固定200;可按需改为500/1000等进行消融实验)
+  eval_mr: False           # 训练每轮与 --test-only 默认只算 AP;需要 MR 时置 True(依赖 matplotlib/scipy)
+
+num_classes: 2             # 单类 person(category_id=1);0 为空占位(同 AI-TOD 约定)
+remap_mscoco_category: False
+
+# ==================== 训练:物理切块小图(保持现有切块训练数据/标注不变) ====================
+train_dataloader:
+  type: DataLoader
+  dataset:
+    type: CocoDetection
+    corner_mode: False     # 物理切块已是 640×576 小图,无需再按 corner 裁剪
+    img_folder: datasets/Tinyperson/train_tiles
+    ann_file: datasets/Tinyperson/annotations/tiny_set_train_tiles.json   # 640×576 物理切块/单类 person
+    return_masks: False
+    transforms:
+      type: Compose
+      ops: ~               # 训练增强 ops 由 base/dataloader.yml(后置 include)填充
+  shuffle: True
+  num_workers: 4
+  drop_last: True
+  collate_fn:
+    type: BatchImageCollateFunction
+
+# ==================== 验证:离线预切块物理小图(已改为线下预切块验证) ====================
+# 测试集由 tools/dataset/tile_tinyperson_test.py 预先切成 640×576 物理小图(存 test_tiles/),
+# 每块只解码一次(消除在线切块对整图的重复解码);其 image id == build_tile_index 的 tile_id,
+# 与评测器(同函数/同参)映射天然一致。merge 回整图 + 官方 AP 逻辑完全不变。
+val_dataloader:
+  type: DataLoader
+  dataset:
+    type: CocoDetection            # 直接读离线物理切块小图(不再在线裁剪整图)
+    corner_mode: False             # 小图已是 640×576,无需再按 corner 裁剪
+    img_folder: datasets/Tinyperson/test_tiles
+    ann_file: datasets/Tinyperson/annotations/tiny_set_test_tiles.json    # 离线切块标注(image id=tile_id)
+    return_masks: False
+    transforms:
+      type: Compose
+      ops: ~               # val 变换(Resize=[800,800]+ConvertPILImage)由 base/dataloader.yml 填充
+  shuffle: False
+  num_workers: 4
+  drop_last: False
+  collate_fn:
+    type: BatchImageCollateFunction

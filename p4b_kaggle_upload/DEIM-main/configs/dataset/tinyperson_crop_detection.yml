@@ -1,0 +1,53 @@
+task: detection
+
+# ==================== 评估器:切块推理 → merge 回原图 → 整图 GT 评估 ====================
+# TinyPersonMergeEvaluator 内部流程:
+#   - 从自动注入的"切块标注 COCO"取每个子块的 corner 偏移与原图 file_name
+#   - 子块预测框 + corner(x1,y1) → 原图全局坐标;按 file_name 聚合;跨块 NMS
+#   - 用 merge_gt_file(整图 GT) 计算 AP50^tiny(maxDets=1000)
+evaluator:
+  type: TinyPersonMergeEvaluator
+  iou_types: ['bbox', ]
+  merge_gt_file: /root/autodl-tmp/Tinyperson/annotations/task/tiny_set_test_all.json   # 整图GT: 786图/18508框/单类person
+  merge_nms_th: 0.5        # 官方跨块 NMS 阈值
+  score_th: 0.01           # 低分过滤阈值(控内存: 17693子块 × num_top_queries)
+  max_det: 1000            # 官方口径
+
+num_classes: 2             # all task 单类 person(category_id=1); 0 为空占位
+remap_mscoco_category: False
+
+train_dataloader:
+  type: DataLoader
+  dataset:
+    type: CocoDetection
+    corner_mode: True      # 按 corner 从原图裁出 640×512 子块
+    # erase 版:图片已擦除 ignore/uncertain 区域,标注为切块局部坐标(官方训练协议)
+    img_folder: /root/autodl-tmp/Tinyperson/erase_with_uncertain_dataset/train
+    ann_file: /root/autodl-tmp/Tinyperson/erase_with_uncertain_dataset/annotations/corner/task/tiny_set_train_sw640_sh512_all.json
+    return_masks: False
+    transforms:
+      type: Compose
+      ops: ~
+  shuffle: True
+  num_workers: 4
+  drop_last: True
+  collate_fn:
+    type: BatchImageCollateFunction
+
+val_dataloader:
+  type: DataLoader
+  dataset:
+    type: CocoDetection
+    corner_mode: True
+    # test 不擦除:原始图片 + 切块标注(单类 all)
+    img_folder: /root/autodl-tmp/Tinyperson/test
+    ann_file: /root/autodl-tmp/Tinyperson/annotations/corner/task/tiny_set_test_sw640_sh512_all.json
+    return_masks: False
+    transforms:
+      type: Compose
+      ops: ~
+  shuffle: False
+  num_workers: 4
+  drop_last: False
+  collate_fn:
+    type: BatchImageCollateFunction

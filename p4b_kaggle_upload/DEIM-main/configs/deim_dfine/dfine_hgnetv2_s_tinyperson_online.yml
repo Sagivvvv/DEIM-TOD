@@ -1,0 +1,116 @@
+__include__: [
+  '../dataset/tinyperson_online_detection.yml',   # TinyPerson 离线预切块版:物理切块(val+train) + TinyPersonMergeEvaluator + 单类 num_classes=2
+  '../runtime.yml',
+  '../base/dataloader.yml',           # 提供 train/val 基础增强 ops 与 collate;本文件已把 Resize 覆盖为 [576,640]、scales 覆盖为非方形对
+  '../base/optimizer.yml',
+  '../base/dfine_hgnetv2.yml',        # 提供模型结构;本文件已把 eval_spatial_size 覆盖为 [576,640](与 Resize 一致)
+]
+
+output_dir: ./output/dfine_hgnetv2_s_tinyperson_online
+
+# ==================== 分辨率:统一 640×576(宽×高) → [h,w]=[576,640] ====================
+# 576=18×32、640=20×32,均满足 32 对齐(HybridEncoder FPN 上采样拼接要求)。
+# eval_spatial_size 必须 == 验证 Resize.size,否则评测时预生成 anchor/位置编码网格与特征图尺寸不匹配会崩。
+# 此处覆盖 base/dfine_hgnetv2.yml 的 [800,800]。
+eval_spatial_size: [576, 640]
+
+# ==================== D-FINE-S 模型结构（与官方 dfine_hgnetv2_s_coco.yml 一致）====================
+DEIM:
+  backbone: HGNetv2
+
+HGNetv2:
+  name: 'B0'
+  return_idx: [1, 2, 3]
+  freeze_at: -1
+  freeze_norm: False
+  use_lab: True
+  # pretrained 权重自动下载：训练前先 source /etc/network_turbo 开学术加速
+
+DFINETransformer:
+  num_layers: 3    # D-FINE-S 用 3 层解码器
+  eval_idx: -1
+
+HybridEncoder:
+  in_channels: [256, 512, 1024]
+  hidden_dim: 256
+  depth_mult: 0.34
+  expansion: 0.5
+
+optimizer:
+  type: AdamW
+  params:
+    -
+      params: '^(?=.*backbone)(?!.*norm|bn).*$'
+      lr: 0.0001
+    -
+      params: '^(?=.*backbone)(?=.*norm|bn).*$'
+      lr: 0.0001
+      weight_decay: 0.
+    -
+      params: '^(?=.*(?:encoder|decoder))(?=.*(?:norm|bn|bias)).*$'
+      weight_decay: 0.
+  lr: 0.0002
+  betas: [0.9, 0.999]
+  weight_decay: 0.0001
+
+# ==================== 训练配方（离线预切块版）====================
+# 关键差异：训练用物理切块 tiny_set_train_tiles.json（子块数远多于整图 746）→ 单 epoch 迭代数大增。
+# 现沿用整图官方日程：epoches=132 / stop_epoch=120 / policy.epoch=120（强增强到 120、120 起两阶段收尾）。
+# 注意：切块版单 epoch 迭代量约为整图版 9~10 倍，132 轮总迭代远超官方整图配方，训练很重、耗时长。
+epoches: 132
+
+# 每 N 轮验证一次(默认每轮)。离线切块验证已大幅提速,但 786 整图 → ~17009 切块前向仍有开销;
+# 只想看趋势/省时可将本值设大(如 10=每 10 轮评测一次)。末轮与两阶段切换前(stop_epoch-1)
+# 强制评测,保证 best_stg1/best_stg2 始终有效。
+eval_freq: 1
+
+# ==================== DDP 稳定性：修复“全背景 batch”导致的双卡 NCCL 超时崩溃 ====================
+# 离线切块后 56.5%(3982/7043)是 0 框背景块。某卡偶发抽到“全背景 batch”(GT 总数=0)时，denoising 的
+# get_contrastive_denoising_training_group 因 max_gt_num==0 返回 None → 该卡无 dn_outputs → denoising
+# 参数无梯度(unused)。find_unused_parameters=False 下双卡梯度 all_reduce 分桶错位(日志：同一 SeqNum
+# 两卡 NumelIn 6625144 vs 512)→ 30min 后 NCCL watchdog 超时 SIGABRT。开启本项让 DDP 标记 unused 参数
+# 并 reduce 零梯度，双卡分桶恢复一致(loss_dict 的 key 对齐另见 det_engine.py:_align_loss_keys)。
+find_unused_parameters: True
+
+# 多卡注意：total_batch_size 会被 world_size 整除（yaml_config.get_rank_batch_size），必须能整除卡数。
+train_dataloader:
+  total_batch_size: 4      # 4GB 显存实测安全值(全 5 档 ≤2.60GB)；16GB 卡可升到 16
+  num_workers: 8           # Windows 上若内存吃紧或启动过慢可降到 4
+  dataset:
+    transforms:
+      # 覆盖 base/dataloader.yml 的 ops(YAML list 整体替换):把 Resize 从 [800,800] 改成原生 640×576 → [h,w]=[576,640]
+      ops:
+        - {type: RandomPhotometricDistort, p: 0.5}
+        - {type: RandomZoomOut, fill: 0}
+        - {type: RandomIoUCrop, p: 0.8}
+        - {type: SanitizeBoundingBoxes, min_size: 1}
+        - {type: RandomHorizontalFlip}
+        - {type: Resize, size: [576, 640], }
+        - {type: SanitizeBoundingBoxes, min_size: 1}
+        - {type: ConvertPILImage, dtype: 'float32', scale: True}
+        - {type: ConvertBoxes, fmt: 'cxcywh', normalize: True}
+      policy:
+        epoch: 120         # 前 120 epoch 强增强，之后关掉（与整图官方一致，恰为 stop_epoch）
+  collate_fn:
+    # 非方形多尺度:scales 用 [h,w] 对(核心代码 F.interpolate(size=[h,w]) 原生支持,无需改代码)。
+    # 围绕原生 [576,640] 上下浮动、保持 ~0.9 长宽比、全部 32 对齐;放大档利于微小目标。
+    # 上面 5 个档位(去重后)在 AMP+bs=4 下均已实测不溢出，故无需为显存裁剪尺度。
+    scales: [[512,576],[576,640],[576,640],[576,640],[576,640],[640,704],[704,768],[768,832]]
+    base_size: 640         # 仅供 profiler 以正方形估 FLOPs(信息打印),不影响训练/评测
+    stop_epoch: 120        # 两阶段触发点（载 best_stg1.pth + 重启 EMA）；切勿设 0
+    ema_restart_decay: 0.9999
+
+# 验证集是离线预切块物理小图：786 整图 → ~17009 个 640×576 小图，每块只解码一次(无重复解码)。
+# eval 前向实测 @ [576,640]（无反传，很省显存）：
+#   bs=8 → 0.86GB / 63.1 img/s    bs=16 → 1.55GB / 64.2 img/s
+#   bs=24 → 2.35GB / 66.7 img/s   bs=32 → 2.83GB / 67.4 img/s
+# bs≥8 吞吐即饱和(~64 img/s)，再大只多吃显存无收益 → 取 16 最划算，且给 postprocessor/评测器留余量。
+val_dataloader:
+  total_batch_size: 16     # 实测 1.55GB、64 img/s（吞吐已饱和，无需再升）
+  num_workers: 8           # 离线小图各自独立解码,I/O 均衡;worker 数按 CPU/内存调,不再需靠多 worker 掩盖重复解码
+  dataset:
+    transforms:
+      # 验证 Resize 必须 == eval_spatial_size == [576,640](640×576 宽×高);离线切块小图已是 640×576,此处近似恒等
+      ops:
+        - {type: Resize, size: [576, 640], }
+        - {type: ConvertPILImage, dtype: 'float32', scale: True}
