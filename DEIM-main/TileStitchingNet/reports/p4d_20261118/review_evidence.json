@@ -1,0 +1,56 @@
+{
+  "report_sha256": "ed1762d7861f4b1135cdcec0f58ccee60ac4eee38a84e604495813ae10f51d76",
+  "paired_hits": {
+    "all@0.5": {
+      "gained": 13,
+      "lost": 8,
+      "C": 3087,
+      "D": 3092
+    },
+    "all@0.75": {
+      "gained": 13,
+      "lost": 14,
+      "C": 1220,
+      "D": 1219
+    },
+    "tiny@0.5": {
+      "gained": 9,
+      "lost": 7,
+      "C": 2216,
+      "D": 2218
+    },
+    "tiny@0.75": {
+      "gained": 9,
+      "lost": 13,
+      "C": 704,
+      "D": 700
+    }
+  },
+  "graph": {
+    "train": {
+      "total": 14837,
+      "covered": 14803
+    },
+    "validation": {
+      "total": 3703,
+      "covered": 3695
+    }
+  },
+  "paired_image_bootstrap": {
+    "repetitions": 2000,
+    "seed": 42,
+    "fixed_checkpoints": true,
+    "Tiny_AP50": [
+      -0.2595416499742441,
+      0.40472088617370117
+    ],
+    "Tiny_AP75": [
+      -0.22338332688021345,
+      0.3832786084260164
+    ]
+  },
+  "source_checks": 23,
+  "artifact_checks": 164,
+  "control_checkpoints": 38,
+  "status": "PASS"
+}
